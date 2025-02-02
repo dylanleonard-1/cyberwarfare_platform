@@ -12,4 +12,5 @@ cryptography
 requests
 itsdangerous
 wtforms
+Flask-Migrate
 
