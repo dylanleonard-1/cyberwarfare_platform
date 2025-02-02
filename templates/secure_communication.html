@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Communication - Blue Team</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu-items");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+
+        function loadChatHistory() {
+            let chatBox = document.getElementById("chat-box");
+            chatBox.innerHTML = "";
+            let savedMessages = JSON.parse(localStorage.getItem("secure_chat")) || [];
+            savedMessages.forEach(msg => addMessageToUI(msg));
+        }
+
+        function sendMessage() {
+            let messageInput = document.getElementById("message-input").value.trim();
+            if (messageInput !== "") {
+                let timestamp = new Date().toLocaleTimeString();
+                let encryptedMessage = btoa(messageInput); // Simulated Encryption (Base64 Encoding)
+                let displayMessage = `[${timestamp}] 🔒 You: ${messageInput}`;
+                
+                let savedMessages = JSON.parse(localStorage.getItem("secure_chat")) || [];
+                savedMessages.push(displayMessage);
+                localStorage.setItem("secure_chat", JSON.stringify(savedMessages));
+
+                addMessageToUI(displayMessage);
+                document.getElementById("message-input").value = "";
+            }
+        }
+
+        function addMessageToUI(message) {
+            let chatBox = document.getElementById("chat-box");
+            let li = document.createElement("li");
+            li.innerHTML = message;
+            chatBox.appendChild(li);
+        }
+
+        document.addEventListener("DOMContentLoaded", loadChatHistory);
+    </script>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .menu-bar {
+            background-color: blue;
+            padding: 10px;
+            text-align: left;
+        }
+        .menu-btn {
+            background: black;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        .menu-items {
+            display: none;
+            background: #222;
+            padding: 15px;
+        }
+        .menu-items a {
+            display: block;
+            color: white;
+            padding: 5px;
+            text-decoration: none;
+        }
+        .menu-items a:hover {
+            background: blue;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .chat-section {
+            background: #222;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px auto;
+            width: 80%;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            background: blue;
+            color: white;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        input {
+            padding: 10px;
+            width: 60%;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            max-height: 200px;
+            overflow-y: auto;
+            text-align: left;
+            background: #333;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-bar">
+        <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+    </div>
+
+    <div id="menu-items" class="menu-items">
+        <a href="{{ url_for('blue_defense') }}">🏠 Welcome Page</a>
+        <a href="{{ url_for('firewall_ids') }}">🛡️ Firewall & IDS</a>
+        <a href="{{ url_for('log_monitoring') }}">📜 Log Monitoring</a>
+        <a href="{{ url_for('threat_intelligence') }}">🕵️ Threat Intelligence</a>
+        <a href="{{ url_for('incident_response') }}">🚨 Incident Response</a>
+        <a href="{{ url_for('forensic_analysis') }}">🔍 Forensic Analysis</a>
+        <a href="{{ url_for('secure_communication') }}">🔒 Secure Communication</a>
+        <a href="{{ url_for('c2_detection') }}">🛰️ C2 Detection</a>
+        <a href="{{ url_for('defense_strategy') }}">⚔️ Defense Strategy</a>
+        <a href="{{ url_for('blue_scoreboard') }}">📊 Scoreboard</a>
+        <a href="{{ url_for('logout') }}">📜 Logout</a>
+    </div>
+
+    <div class="container">
+        <h1>🔒 Secure Communication</h1>
+        <p>Ensure encrypted communication between team members.</p>
+
+        <div class="chat-section">
+            <h2>💬 Secure Chat</h2>
+            <input type="text" id="message-input" placeholder="Enter message">
+            <button onclick="sendMessage()">📩 Send</button>
+            <ul id="chat-box" style="text-align:left;"></ul>
+        </div>
+    </div>
+
+</body>
+</html>
+

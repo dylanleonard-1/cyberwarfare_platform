@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Threat Intelligence - Blue Team</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu-items");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+
+        function loadThreatFeed() {
+            let threatFeed = document.getElementById("threat-feed");
+            threatFeed.innerHTML = "";
+            let savedThreats = JSON.parse(localStorage.getItem("threat_intel_feed")) || [];
+            savedThreats.forEach(threat => addThreatToUI(threat));
+        }
+
+        function addThreatFeed() {
+            let threatFeed = document.getElementById("threat-feed");
+            let threats = [
+                "⚠️ New phishing campaign targeting financial services.",
+                "🚨 DDoS attack activity increased by 25% this week.",
+                "🔍 Malware variant 'Trojan.XYZ' detected in email attachments.",
+                "💀 Ransomware group 'LockBit' identified in dark web forums.",
+                "🔴 Red Team simulated SQL Injection attack on login portal."
+            ];
+            let randomThreat = threats[Math.floor(Math.random() * threats.length)];
+            
+            let savedThreats = JSON.parse(localStorage.getItem("threat_intel_feed")) || [];
+            savedThreats.unshift(randomThreat);
+            localStorage.setItem("threat_intel_feed", JSON.stringify(savedThreats));
+
+            addThreatToUI(randomThreat);
+        }
+
+        function addThreatToUI(threat) {
+            let threatFeed = document.getElementById("threat-feed");
+            let li = document.createElement("li");
+            li.textContent = threat;
+            li.style.padding = "5px";
+            li.style.borderBottom = "1px solid #444";
+            li.style.color = "red";
+            threatFeed.insertBefore(li, threatFeed.firstChild);
+        }
+
+        function lookupIP() {
+            let ipInput = document.getElementById("ip-input").value.trim();
+            let reputationDiv = document.getElementById("ip-reputation");
+
+            if (ipInput === "") {
+                reputationDiv.innerHTML = "<p style='color: yellow;'>⚠️ Enter an IP address to check reputation.</p>";
+                return;
+            }
+
+            let riskLevels = ["✅ Safe", "⚠️ Suspicious", "❌ Malicious"];
+            let randomRisk = riskLevels[Math.floor(Math.random() * riskLevels.length)];
+
+            let color = randomRisk === "✅ Safe" ? "green" :
+                        randomRisk === "⚠️ Suspicious" ? "orange" : "red";
+
+            reputationDiv.innerHTML = `<p style='color: ${color};'>${randomRisk}: IP ${ipInput}</p>`;
+        }
+
+        document.addEventListener("DOMContentLoaded", loadThreatFeed);
+    </script>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .menu-bar {
+            background-color: blue;
+            padding: 10px;
+            text-align: left;
+        }
+        .menu-btn {
+            background: black;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        .menu-items {
+            display: none;
+            background: #222;
+            padding: 15px;
+        }
+        .menu-items a {
+            display: block;
+            color: white;
+            padding: 5px;
+            text-decoration: none;
+        }
+        .menu-items a:hover {
+            background: blue;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .threat-section {
+            background: #222;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px auto;
+            width: 80%;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            background: blue;
+            color: white;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        input {
+            padding: 10px;
+            width: 60%;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            max-height: 200px;
+            overflow-y: auto;
+            text-align: left;
+            background: #333;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .threat-log {
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-bar">
+        <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+    </div>
+
+    <div id="menu-items" class="menu-items">
+        <a href="{{ url_for('blue_defense') }}">🏠 Welcome Page</a>
+        <a href="{{ url_for('firewall_ids') }}">🛡️ Firewall & IDS</a>
+        <a href="{{ url_for('log_monitoring') }}">📜 Log Monitoring</a>
+        <a href="{{ url_for('threat_intelligence') }}">🕵️ Threat Intelligence</a>
+        <a href="{{ url_for('incident_response') }}">🚨 Incident Response</a>
+        <a href="{{ url_for('forensic_analysis') }}">🔍 Forensic Analysis</a>
+        <a href="{{ url_for('secure_communication') }}">🔒 Secure Communication</a>
+        <a href="{{ url_for('c2_detection') }}">🛰️ C2 Detection</a>
+        <a href="{{ url_for('defense_strategy') }}">⚔️ Defense Strategy</a>
+        <a href="{{ url_for('blue_scoreboard') }}">📊 Scoreboard</a>
+        <a href="{{ url_for('logout') }}">📜 Logout</a>
+    </div>
+
+    <div class="container">
+        <h1>🕵️ Threat Intelligence</h1>
+        <p>Gather intelligence on known attack patterns.</p>
+
+        <div class="threat-section">
+            <h2>🔍 Live Threat Feed</h2>
+            <button onclick="addThreatFeed()">🔄 Generate Threat Alert</button>
+            <ul id="threat-feed" style="text-align:left;"></ul>
+        </div>
+
+        <div class="threat-section">
+            <h2>🌍 IP Reputation Lookup</h2>
+            <input type="text" id="ip-input" placeholder="Enter IP address (e.g., 192.168.1.1)">
+            <button onclick="lookupIP()">🔍 Check Reputation</button>
+            <div id="ip-reputation"></div>
+        </div>
+    </div>
+
+</body>
+</html>
+

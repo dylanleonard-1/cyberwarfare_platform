@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Chat - Red Team</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu-items");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+
+        function sendMessage(event) {
+            event.preventDefault();
+            let messageInput = document.getElementById("message");
+            let message = messageInput.value;
+
+            if (message.trim() !== "") {
+                let chatBox = document.getElementById("chat-box");
+                let newMessage = document.createElement("p");
+                newMessage.textContent = "You: " + message;
+                chatBox.appendChild(newMessage);
+                
+                messageInput.value = ""; // Clear input field
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .menu-bar {
+            background-color: red;
+            padding: 10px;
+            text-align: left;
+        }
+        .menu-btn {
+            background: black;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .menu-items {
+            display: none;
+            background: #222;
+            padding: 15px;
+        }
+        .menu-items a {
+            display: block;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .menu-items a:hover {
+            background: darkred;
+        }
+        .chat-container {
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: left;
+        }
+        .chat-box {
+            border: 1px solid white;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            background: #333;
+            border-radius: 5px;
+        }
+        .chat-input {
+            width: 90%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        .send-btn {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-bar">
+        <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+    </div>
+
+    <div id="menu-items" class="menu-items">
+        <a href="{{ url_for('red_attack') }}">🏠 Welcome Page</a>
+        <a href="{{ url_for('brute_force') }}">🔓 Brute Force</a>
+        <a href="{{ url_for('vuln_scan') }}">🔍 Vulnerability Scanner</a>
+        <a href="{{ url_for('xss_sql') }}">💻 XSS & SQL Injection</a>
+        <a href="{{ url_for('phishing') }}">📧 Phishing Campaign</a>
+        <a href="{{ url_for('reverse_shell') }}">🔄 Reverse Shell</a>
+        <a href="{{ url_for('c2_panel') }}">⚡ C2 Command Panel</a>
+        <a href="{{ url_for('team_chat') }}">💬 Team Chat</a>
+        <a href="{{ url_for('red_scoreboard') }}">📊 Scoreboard</a>
+        <a href="{{ url_for('logout') }}">🚪 Logout</a>
+    </div>
+
+    <div class="chat-container">
+        <h1>💬 Red Team Chat</h1>
+        <p>Communicate with your team securely.</p>
+
+        <div class="chat-box" id="chat-box">
+            <!-- Messages will appear here -->
+        </div>
+
+        <form onsubmit="sendMessage(event)">
+            <input type="text" id="message" placeholder="Type your message..." class="chat-input">
+            <button type="submit" class="send-btn">Send</button>
+        </form>
+    </div>
+
+</body>
+</html>
+

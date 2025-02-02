@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .admin-menu {
+            display: flex;
+            justify-content: center;
+            background-color: #222;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.3);
+        }
+        .admin-menu a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .admin-menu a:hover {
+            color: #f39c12;
+        }
+        .dashboard-container {
+            text-align: center;
+            color: white;
+            margin-top: 20px;
+        }
+        .dashboard-card {
+            background-color: #333;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.3);
+            margin-top: 20px;
+        }
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #444;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="admin-menu">
+        <a href="{{ url_for('red_attack') }}">🔥 Red Team Console</a>
+        <a href="{{ url_for('blue_defense') }}">🔵 Blue Team Console</a>
+        <a href="{{ url_for('red_scoreboard') }}">📊 Red Team Scoreboard</a>
+        <a href="{{ url_for('blue_scoreboard') }}">📈 Blue Team Scoreboard</a>
+        <a href="{{ url_for('admin_monitoring') }}">🔍 System Monitoring</a>
+        <a href="{{ url_for('logout') }}" style="color: #ff4444;">🚪 Logout</a>
+    </div>
+
+    <div class="dashboard-container">
+        <h2>🛠 Admin Dashboard</h2>
+        <p>Welcome, Admin! You have full control over both Red and Blue teams.</p>
+
+        <div class="dashboard-card">
+            <h3>👥 Online Users</h3>
+            {% if online_users %}
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Team</th>
+                    </tr>
+                    {% for user in online_users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.team }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p>No users currently online.</p>
+            {% endif %}
+        </div>
+
+        <div class="dashboard-card">
+            <h3>📊 System Stats</h3>
+            <p>Red Team Users: {{ red_users }}</p>
+            <p>Blue Team Users: {{ blue_users }}</p>
+            <p>Total Users: {{ total_users }}</p>
+            <p>Currently Online: {{ online_count }}</p>
+        </div>
+    </div>
+
+</body>
+</html>
+

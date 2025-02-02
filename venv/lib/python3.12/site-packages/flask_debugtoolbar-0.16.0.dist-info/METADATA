@@ -1,0 +1,63 @@
+Metadata-Version: 2.1
+Name: Flask-DebugToolbar
+Version: 0.16.0
+Summary: A toolbar overlay for debugging Flask applications.
+Maintainer-email: Pallets Ecosystem <contact@palletsprojects.com>
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Classifier: Development Status :: 4 - Beta
+Classifier: Framework :: Flask
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python
+Classifier: Typing :: Typed
+Requires-Dist: flask>=2.3.0
+Project-URL: Changes, https://github.com/pallets-eco/flask-debugtoolbar/releases/
+Project-URL: Chat, https://discord.gg/pallets
+Project-URL: Documentation, https://flask-debugtoolbar.readthedocs.io
+Project-URL: Source, https://github.com/pallets-eco/flask-debugtoolbar/
+
+# Flask-DebugToolbar
+
+A [Flask][] extension that injects debugging information into rendered HTML
+pages. Presented as a sidebar with configurable panels of information.
+
+This is a port of the excellent [django-debug-toolbar][ddt].
+
+[Flask]: https://flask.palletsprojects.com
+[ddt]: https://github.com/jazzband/django-debug-toolbar/
+
+
+## Pallets Community Ecosystem
+
+> [!IMPORTANT]\
+> This project is part of the Pallets Community Ecosystem. Pallets is the open
+> source organization that maintains Flask; Pallets-Eco enables community
+> maintenance of related projects. If you are interested in helping maintain
+> this project, please reach out on [the Pallets Discord server][discord].
+
+[discord]: https://discord.gg/pallets
+
+
+## Example
+
+Setting up the debug toolbar is simple:
+
+```python
+from flask import Flask
+from flask_debugtoolbar import DebugToolbarExtension
+
+app = Flask(__name__)
+app.config["SECRET_KEY"] = "<replace with a secret key>"
+
+toolbar = DebugToolbarExtension(app)
+```
+
+The toolbar will automatically be injected into Jinja templates when debug
+mode is enabled.
+
+```
+$ flask -A my_app run --debug
+```
+
+![](https://raw.githubusercontent.com/pallets-eco/flask-debugtoolbar/main/docs/_static/example.gif)
+

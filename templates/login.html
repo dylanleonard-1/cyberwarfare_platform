@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Cyber Warfare</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .login-container {
+            margin-top: 50px;
+        }
+        h1 {
+            color: {{ 'red' if team == 'red' else 'blue' }};
+        }
+        .form-container {
+            background: #222;
+            padding: 20px;
+            display: inline-block;
+            border-radius: 10px;
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        .login-btn {
+            background-color: {{ 'red' if team == 'red' else 'blue' }};
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+        .register-link {
+            color: {{ 'red' if team == 'red' else 'blue' }};
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Login to the {{ team.capitalize() }} Team</h1>
+    </header>
+
+    <div class="login-container">
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-messages {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="form-container">
+            <form action="{{ url_for('login', team=team) }}" method="POST">
+                <input type="text" name="email" placeholder="Email" class="input-field" required>
+                <input type="password" name="password" placeholder="Password" class="input-field" required>
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+            <p>Don't have an account? <a href="{{ url_for('register', team=team) }}" class="register-link">Register</a></p>
+        </div>
+    </div>
+</body>
+</html>
+

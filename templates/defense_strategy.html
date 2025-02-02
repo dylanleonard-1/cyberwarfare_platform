@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defense Strategy - Blue Team</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu-items");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+
+        function submitStrategy(event) {
+            event.preventDefault();
+            let strategyName = document.getElementById("strategy_name").value;
+            let strategyCategory = document.getElementById("strategy_category").value;
+            let strategyDetails = document.getElementById("strategy_details").value;
+            let logBox = document.getElementById("strategy-log");
+
+            if (strategyName.trim() !== "" && strategyDetails.trim() !== "") {
+                let newEntry = document.createElement("p");
+                newEntry.innerHTML = `⚔️ <b>${strategyCategory.replace("_", " ").toUpperCase()}</b>: ${strategyName} - ${strategyDetails}`;
+                logBox.appendChild(newEntry);
+                document.getElementById("strategy_name").value = "";
+                document.getElementById("strategy_details").value = "";
+            } else {
+                alert("Please fill out all fields before submitting.");
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .menu-bar {
+            background-color: blue;
+            padding: 10px;
+            text-align: left;
+        }
+        .menu-btn {
+            background: black;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .menu-items {
+            display: none;
+            background: #222;
+            padding: 15px;
+        }
+        .menu-items a {
+            display: block;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .menu-items a:hover {
+            background: darkblue;
+        }
+        .container {
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: left;
+        }
+        .input-field {
+            width: 95%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        .submit-btn {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .strategy-log {
+            background: #333;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            height: 150px;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-bar">
+        <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+    </div>
+
+    <div id="menu-items" class="menu-items">
+        <a href="{{ url_for('blue_defense') }}">🏠 Welcome Page</a>
+        <a href="{{ url_for('firewall_ids') }}">🛡️ Firewall & IDS</a>
+        <a href="{{ url_for('log_monitoring') }}">📜 Log Monitoring</a>
+        <a href="{{ url_for('threat_intelligence') }}">🕵️ Threat Intelligence</a>
+        <a href="{{ url_for('incident_response') }}">🚨 Incident Response</a>
+        <a href="{{ url_for('forensic_analysis') }}">🔍 Forensic Analysis</a>
+        <a href="{{ url_for('secure_communication') }}">🔒 Secure Communication</a>
+        <a href="{{ url_for('c2_detection') }}">🛰️ C2 Detection</a>
+        <a href="{{ url_for('defense_strategy') }}">⚔️ Defense Strategy</a>
+        <a href="{{ url_for('blue_scoreboard') }}">📊 Scoreboard</a>
+        <a href="{{ url_for('logout') }}">📜 Logout</a>
+    </div>
+
+    <div class="container">
+        <h1>⚔️ Defense Strategy</h1>
+        <p>Develop and execute defense playbooks against Red Team attacks.</p>
+        <p>Use the form below to document strategies for responding to cyber threats.</p>
+
+        <form onsubmit="submitStrategy(event)">
+            <label for="strategy_name">Defense Strategy Name:</label>
+            <input type="text" id="strategy_name" placeholder="Enter strategy name" class="input-field" required>
+
+            <label for="strategy_category">Category:</label>
+            <select id="strategy_category">
+                <option value="network">🛡️ Network Defense</option>
+                <option value="endpoint">💻 Endpoint Security</option>
+                <option value="user_training">🎓 User Awareness Training</option>
+                <option value="threat_hunting">🕵️ Threat Hunting</option>
+            </select>
+
+            <label for="strategy_details">Strategy Details:</label>
+            <textarea id="strategy_details" placeholder="Describe your defense approach" rows="4" class="input-field" required></textarea>
+
+            <button type="submit" class="submit-btn">Submit Defense Strategy</button>
+        </form>
+
+        <div id="strategy-log" class="strategy-log">
+            <p>📜 Strategy Log:</p>
+        </div>
+    </div>
+
+</body>
+</html>
+

@@ -1,0 +1,15 @@
+Flask
+Flask-SQLAlchemy
+Flask-Mail
+Flask-WTF
+gunicorn
+Jinja2
+Werkzeug
+email-validator
+python-dotenv
+psycopg2-binary
+cryptography
+requests
+itsdangerous
+wtforms
+

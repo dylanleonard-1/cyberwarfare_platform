@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forensic Analysis - Blue Team</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu-items");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+
+        function parseLog() {
+            let logInput = document.getElementById("log-input").value;
+            if (logInput.trim() !== "") {
+                let logOutput = document.getElementById("log-output");
+                let logLines = logInput.split("\n");
+
+                logOutput.innerHTML = "";
+                let suspiciousKeywords = ["error", "attack", "malware", "breach", "unauthorized", "compromise"];
+
+                logLines.forEach(line => {
+                    let logEntry = document.createElement("p");
+                    logEntry.textContent = line;
+
+                    suspiciousKeywords.forEach(keyword => {
+                        if (line.toLowerCase().includes(keyword)) {
+                            logEntry.style.color = "red";
+                            logEntry.innerHTML = "⚠️ <b>" + logEntry.innerHTML + "</b>";
+                        }
+                    });
+
+                    logOutput.appendChild(logEntry);
+                });
+            }
+        }
+
+        function hexDump() {
+            let fileInput = document.getElementById("file-input").files[0];
+            if (!fileInput) {
+                alert("Please select a file.");
+                return;
+            }
+
+            let reader = new FileReader();
+            reader.onload = function(event) {
+                let result = event.target.result;
+                let hexOutput = document.getElementById("hex-output");
+                let hexString = "", asciiString = "";
+
+                for (let i = 0; i < result.length; i++) {
+                    let hex = result.charCodeAt(i).toString(16).padStart(2, "0");
+                    let ascii = result.charCodeAt(i) > 31 && result.charCodeAt(i) < 127 ? result[i] : "."; // Replace non-printable chars
+                    
+                    hexString += hex + " ";
+                    asciiString += ascii;
+                    
+                    if ((i + 1) % 16 === 0) {
+                        hexString += " | " + asciiString + "<br>";
+                        asciiString = "";
+                    }
+                }
+
+                hexOutput.innerHTML = `<pre>${hexString}</pre>`;
+            };
+            reader.readAsBinaryString(fileInput);
+        }
+    </script>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .menu-bar {
+            background-color: blue;
+            padding: 10px;
+            text-align: left;
+        }
+        .menu-btn {
+            background: black;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        .menu-items {
+            display: none;
+            background: #222;
+            padding: 15px;
+        }
+        .menu-items a {
+            display: block;
+            color: white;
+            padding: 5px;
+            text-decoration: none;
+        }
+        .menu-items a:hover {
+            background: blue;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .forensic-section {
+            background: #222;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px auto;
+            width: 80%;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            background: blue;
+            color: white;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        input, textarea {
+            padding: 10px;
+            width: 60%;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        pre {
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background: #333;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-bar">
+        <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+    </div>
+
+    <div id="menu-items" class="menu-items">
+        <a href="{{ url_for('blue_defense') }}">🏠 Welcome Page</a>
+        <a href="{{ url_for('firewall_ids') }}">🛡️ Firewall & IDS</a>
+        <a href="{{ url_for('log_monitoring') }}">📜 Log Monitoring</a>
+        <a href="{{ url_for('threat_intelligence') }}">🕵️ Threat Intelligence</a>
+        <a href="{{ url_for('incident_response') }}">🚨 Incident Response</a>
+        <a href="{{ url_for('forensic_analysis') }}">🔍 Forensic Analysis</a>
+        <a href="{{ url_for('secure_communication') }}">🔒 Secure Communication</a>
+        <a href="{{ url_for('c2_detection') }}">🛰️ C2 Detection</a>
+        <a href="{{ url_for('defense_strategy') }}">⚔️ Defense Strategy</a>
+        <a href="{{ url_for('blue_scoreboard') }}">📊 Scoreboard</a>
+        <a href="{{ url_for('logout') }}">📜 Logout</a>
+    </div>
+
+    <div class="container">
+        <h1>🔍 Forensic Analysis</h1>
+        <p>Analyze digital evidence and investigate cyber incidents.</p>
+
+        <div class="forensic-section">
+            <h2>📜 Log File Analysis</h2>
+            <textarea id="log-input" placeholder="Paste logs here"></textarea>
+            <button onclick="parseLog()">🔍 Analyze Logs</button>
+            <div id="log-output"></div>
+        </div>
+
+        <div class="forensic-section">
+            <h2>🛠️ Hex Dump Viewer</h2>
+            <input type="file" id="file-input">
+            <button onclick="hexDump()">🔍 View Hex Dump</button>
+            <div id="hex-output"></div>
+        </div>
+    </div>
+
+</body>
+</html>
+

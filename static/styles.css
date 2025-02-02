@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #111;
+    color: white;
+}
+
+header {
+    background-color: #222;
+    padding: 20px;
+}
+
+.container, .login-container, .dashboard-container, .scoreboard-container {
+    margin: 50px auto;
+    padding: 20px;
+    width: 50%;
+    border-radius: 10px;
+    background-color: #333;
+}
+
+button {
+    padding: 10px;
+    margin: 10px;
+    border: none;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+}
+
+.red-team, .blue-team, .red-action, .blue-action {
+    display: block;
+    margin: 20px auto;
+    padding: 15px;
+    width: 200px;
+    text-align: center;
+    color: white;
+    text-decoration: none;
+}
+
+.red-team, .red-action { background-color: red; }
+.blue-team, .blue-action { background-color: blue; }

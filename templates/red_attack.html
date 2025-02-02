@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Team Attack Console</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu-items");
+            if (menu.style.display === "block") {
+                menu.style.opacity = 0;
+                setTimeout(() => { menu.style.display = "none"; }, 300);
+            } else {
+                menu.style.display = "block";
+                setTimeout(() => { menu.style.opacity = 1; }, 10);
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .menu-bar {
+            background-color: red;
+            padding: 10px;
+            text-align: left;
+        }
+        .menu-btn {
+            background: black;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .menu-items {
+            display: none;
+            background: #222;
+            padding: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .menu-items a {
+            display: block;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .menu-items a:hover {
+            background: darkred;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-bar">
+        <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+    </div>
+
+    <div id="menu-items" class="menu-items">
+        <a href="{{ url_for('red_attack') }}">🏠 Welcome Page</a>
+        <a href="{{ url_for('brute_force') }}">🔓 Brute Force</a>
+        <a href="{{ url_for('vuln_scan') }}">🔍 Vulnerability Scanner</a>
+        <a href="{{ url_for('xss_sql') }}">💻 XSS & SQL Injection</a>
+        <a href="{{ url_for('phishing') }}">📧 Phishing Campaign</a>
+        <a href="{{ url_for('reverse_shell') }}">🔄 Reverse Shell</a>
+        <a href="{{ url_for('c2_panel') }}">⚡ C2 Command Panel</a>
+        <a href="{{ url_for('team_chat') }}">💬 Team Chat</a>
+        <a href="{{ url_for('red_scoreboard') }}">📊 Scoreboard</a>
+        <a href="{{ url_for('logout') }}">🚪 Logout</a>
+    </div>
+
+    <h1>🔥 Welcome to the Red Team Attack Console 🔥</h1>
+    <p>Use the tools above to simulate attacks and earn points.</p>
+    
+</body>
+</html>
+

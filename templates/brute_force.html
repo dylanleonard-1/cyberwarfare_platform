@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brute Force Attack - Red Team</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu-items");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+    </script>
+    <style>
+        body {
+            background-color: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .menu-bar {
+            background-color: red;
+            padding: 10px;
+            text-align: left;
+        }
+        .menu-btn {
+            background: black;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        .menu-items {
+            display: none;
+            background: #222;
+            padding: 15px;
+        }
+        .menu-items a {
+            display: block;
+            color: white;
+            padding: 5px;
+            text-decoration: none;
+        }
+        .menu-items a:hover {
+            background: red;
+        }
+        .container {
+            margin-top: 50px;
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-bar">
+        <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+    </div>
+
+    <div id="menu-items" class="menu-items">
+        <a href="{{ url_for('red_attack') }}">🏠 Welcome Page</a>
+        <a href="{{ url_for('brute_force') }}">🔓 Brute Force</a>
+        <a href="{{ url_for('vuln_scan') }}">🔍 Vulnerability Scanner</a>
+        <a href="{{ url_for('xss_sql') }}">💻 XSS & SQL Injection</a>
+        <a href="{{ url_for('phishing') }}">📧 Phishing Campaign</a>
+        <a href="{{ url_for('reverse_shell') }}">🔄 Reverse Shell</a>
+        <a href="{{ url_for('c2_panel') }}">⚡ C2 Command Panel</a>
+        <a href="{{ url_for('team_chat') }}">💬 Team Chat</a>
+        <a href="{{ url_for('red_scoreboard') }}">📊 Scoreboard</a>
+        <a href="{{ url_for('logout') }}">🚪 Logout</a>
+    </div>
+
+    <div class="container">
+        <h1>🔓 Brute Force Attack</h1>
+        <p>Enter a target username and select a dictionary file to attempt brute force attack.</p>
+        
+        <form method="POST">
+            <label for="username">Target Username:</label><br>
+            <input type="text" name="username" required><br><br>
+
+            <label for="wordlist">Dictionary File:</label><br>
+            <select name="wordlist">
+                <option value="small">Small Wordlist</option>
+                <option value="large">Large Wordlist</option>
+            </select><br><br>
+
+            <button type="submit">Start Attack</button>
+        </form>
+
+        {% if result %}
+            <h3>Attack Results:</h3>
+            <p>{{ result|safe }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+

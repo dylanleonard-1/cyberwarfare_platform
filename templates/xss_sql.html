@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XSS & SQL Injection - Red Team</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu-items");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+
+        function testInjection(event) {
+            event.preventDefault();
+            let targetUrl = document.getElementById("target_url").value;
+            let logBox = document.getElementById("injection-log");
+
+            if (targetUrl.trim() !== "") {
+                let newEntry = document.createElement("p");
+                newEntry.innerHTML = "🔍 Testing injection on: <b>" + targetUrl + "</b>";
+                logBox.appendChild(newEntry);
+                document.getElementById("target_url").value = "";
+
+                setTimeout(() => {
+                    let successEntry = document.createElement("p");
+                    successEntry.innerHTML = "✅ Injection test completed: <b>No vulnerabilities found.</b>";
+                    logBox.appendChild(successEntry);
+                }, 3000);
+            } else {
+                alert("Please enter a valid target URL.");
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .menu-bar {
+            background-color: red;
+            padding: 10px;
+            text-align: left;
+        }
+        .menu-btn {
+            background: black;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .menu-items {
+            display: none;
+            background: #222;
+            padding: 15px;
+        }
+        .menu-items a {
+            display: block;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .menu-items a:hover {
+            background: darkred;
+        }
+        .container {
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: left;
+        }
+        .input-field {
+            width: 95%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        .test-btn {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .injection-log {
+            background: #333;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            height: 150px;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-bar">
+        <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+    </div>
+
+    <div id="menu-items" class="menu-items">
+        <a href="{{ url_for('red_attack') }}">🏠 Welcome Page</a>
+        <a href="{{ url_for('brute_force') }}">🔓 Brute Force</a>
+        <a href="{{ url_for('vuln_scan') }}">🔍 Vulnerability Scanner</a>
+        <a href="{{ url_for('xss_sql') }}">💻 XSS & SQL Injection</a>
+        <a href="{{ url_for('phishing') }}">📧 Phishing Campaign</a>
+        <a href="{{ url_for('reverse_shell') }}">🔄 Reverse Shell</a>
+        <a href="{{ url_for('c2_panel') }}">⚡ C2 Command Panel</a>
+        <a href="{{ url_for('team_chat') }}">💬 Team Chat</a>
+        <a href="{{ url_for('red_scoreboard') }}">📊 Scoreboard</a>
+        <a href="{{ url_for('logout') }}">🚪 Logout</a>
+    </div>
+
+    <div class="container">
+        <h1>💻 XSS & SQL Injection</h1>
+        <p>Test for web application vulnerabilities.</p>
+        
+        <form onsubmit="testInjection(event)">
+            <label>Target URL:</label>
+            <input type="text" id="target_url" placeholder="Enter target URL" class="input-field">
+            <button type="submit" class="test-btn">Test Injection</button>
+        </form>
+
+        <div id="injection-log" class="injection-log">
+            <p>📜 Injection Log:</p>
+        </div>
+    </div>
+
+</body>
+</html>
+

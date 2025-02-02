@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Response - Blue Team</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu-items");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+
+        function submitIncident(event) {
+            event.preventDefault();
+            let incidentType = document.getElementById("incident_type").value;
+            let incidentDetails = document.getElementById("incident_details").value;
+            let logBox = document.getElementById("incident-log");
+
+            if (incidentDetails.trim() !== "") {
+                let newEntry = document.createElement("p");
+                newEntry.innerHTML = `🚨 <b>${incidentType.replace("_", " ").toUpperCase()}</b>: ${incidentDetails}`;
+                logBox.appendChild(newEntry);
+                document.getElementById("incident_details").value = "";
+            } else {
+                alert("Please enter incident details before submitting.");
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .menu-bar {
+            background-color: blue;
+            padding: 10px;
+            text-align: left;
+        }
+        .menu-btn {
+            background: black;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .menu-items {
+            display: none;
+            background: #222;
+            padding: 15px;
+        }
+        .menu-items a {
+            display: block;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .menu-items a:hover {
+            background: darkblue;
+        }
+        .container {
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: left;
+        }
+        .input-field {
+            width: 95%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        .submit-btn {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .incident-log {
+            background: #333;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            height: 150px;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-bar">
+        <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+    </div>
+
+    <div id="menu-items" class="menu-items">
+        <a href="{{ url_for('blue_defense') }}">🏠 Welcome Page</a>
+        <a href="{{ url_for('firewall_ids') }}">🛡️ Firewall & IDS</a>
+        <a href="{{ url_for('log_monitoring') }}">📜 Log Monitoring</a>
+        <a href="{{ url_for('threat_intelligence') }}">🕵️ Threat Intelligence</a>
+        <a href="{{ url_for('incident_response') }}">🚨 Incident Response</a>
+        <a href="{{ url_for('forensic_analysis') }}">🔍 Forensic Analysis</a>
+        <a href="{{ url_for('secure_communication') }}">🔒 Secure Communication</a>
+        <a href="{{ url_for('c2_detection') }}">🛰️ C2 Detection</a>
+        <a href="{{ url_for('defense_strategy') }}">⚔️ Defense Strategy</a>
+        <a href="{{ url_for('blue_scoreboard') }}">📊 Scoreboard</a>
+        <a href="{{ url_for('logout') }}">📜 Logout</a>
+    </div>
+
+    <div class="container">
+        <h1>🚨 Incident Response</h1>
+        <p>React to ongoing cyber incidents in real time. Below you can log new incidents, respond to them, and view previous reports.</p>
+
+        <form onsubmit="submitIncident(event)">
+            <label for="incident_type">Incident Type:</label>
+            <select id="incident_type" name="incident_type">
+                <option value="phishing">🎣 Phishing Attempt</option>
+                <option value="malware">🦠 Malware Detection</option>
+                <option value="ddos">🌊 DDoS Attack</option>
+                <option value="unauthorized_access">🚷 Unauthorized Access</option>
+            </select>
+
+            <label for="incident_details">Incident Details:</label>
+            <textarea id="incident_details" name="incident_details" placeholder="Describe the incident..." rows="4" required></textarea>
+
+            <button type="submit" class="submit-btn">Submit Incident Report</button>
+        </form>
+
+        <div id="incident-log" class="incident-log">
+            <p>📜 Incident Log:</p>
+        </div>
+    </div>
+
+</body>
+</html>
+

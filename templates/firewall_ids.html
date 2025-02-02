@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firewall & IDS - Blue Team</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu-items");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+
+        function loadRules() {
+            let ruleList = document.getElementById("rule-list");
+            ruleList.innerHTML = "";
+            let savedRules = JSON.parse(localStorage.getItem("firewall_rules")) || [];
+            savedRules.forEach(rule => {
+                addRuleToUI(rule);
+            });
+        }
+
+        function addRule() {
+            let rule = document.getElementById("firewall-rule").value;
+            if (rule.trim() !== "") {
+                let savedRules = JSON.parse(localStorage.getItem("firewall_rules")) || [];
+                savedRules.push(rule);
+                localStorage.setItem("firewall_rules", JSON.stringify(savedRules));
+                addRuleToUI(rule);
+                document.getElementById("firewall-rule").value = "";
+            }
+        }
+
+        function addRuleToUI(rule) {
+            let ruleList = document.getElementById("rule-list");
+            let li = document.createElement("li");
+            li.textContent = rule;
+            let removeButton = document.createElement("button");
+            removeButton.textContent = "❌";
+            removeButton.style.marginLeft = "10px";
+            removeButton.onclick = function() {
+                ruleList.removeChild(li);
+                let savedRules = JSON.parse(localStorage.getItem("firewall_rules")) || [];
+                localStorage.setItem("firewall_rules", JSON.stringify(savedRules.filter(r => r !== rule)));
+            };
+            li.appendChild(removeButton);
+            ruleList.appendChild(li);
+        }
+
+        function triggerAlert() {
+            let alertsDiv = document.getElementById("ids-alerts");
+            let alertTypes = [
+                "Brute Force Attempt Detected!",
+                "SQL Injection Alert!",
+                "Unusual Traffic from IP 192.168.1.5",
+                "DDoS Attack Signs Detected!",
+                "Unauthorized Access Attempt!",
+                "Suspicious Beaconing Activity!"
+            ];
+
+            let randomAlert = alertTypes[Math.floor(Math.random() * alertTypes.length)];
+            let alertBox = document.createElement("div");
+            alertBox.textContent = "⚠️ " + randomAlert;
+            alertBox.style.padding = "10px";
+            alertBox.style.background = "red";
+            alertBox.style.color = "white";
+            alertBox.style.margin = "5px 0";
+            alertBox.style.opacity = "0";
+            alertBox.style.transition = "opacity 1s ease-in-out";
+
+            alertsDiv.appendChild(alertBox);
+            setTimeout(() => alertBox.style.opacity = "1", 100);
+        }
+
+        document.addEventListener("DOMContentLoaded", loadRules);
+    </script>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .menu-bar {
+            background-color: blue;
+            padding: 10px;
+            text-align: left;
+        }
+        .menu-btn {
+            background: black;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        .menu-items {
+            display: none;
+            background: #222;
+            padding: 15px;
+        }
+        .menu-items a {
+            display: block;
+            color: white;
+            padding: 5px;
+            text-decoration: none;
+        }
+        .menu-items a:hover {
+            background: blue;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .firewall-section, .ids-section {
+            background: #222;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px auto;
+            width: 80%;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            background: blue;
+            color: white;
+            border-radius: 5px;
+        }
+        input {
+            padding: 10px;
+            width: 60%;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .firewall-section ul {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            max-height: 150px;
+            overflow-y: auto;
+            background: #333;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .firewall-section ul li {
+            background: #444;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-bar">
+        <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+    </div>
+
+    <div id="menu-items" class="menu-items">
+        <a href="{{ url_for('blue_defense') }}">🏠 Welcome Page</a>
+        <a href="{{ url_for('firewall_ids') }}">🛡️ Firewall & IDS</a>
+        <a href="{{ url_for('log_monitoring') }}">📜 Log Monitoring</a>
+        <a href="{{ url_for('threat_intelligence') }}">🕵️ Threat Intelligence</a>
+        <a href="{{ url_for('incident_response') }}">🚨 Incident Response</a>
+        <a href="{{ url_for('forensic_analysis') }}">🔍 Forensic Analysis</a>
+        <a href="{{ url_for('secure_communication') }}">🔒 Secure Communication</a>
+        <a href="{{ url_for('c2_detection') }}">🛰️ C2 Detection</a>
+        <a href="{{ url_for('defense_strategy') }}">⚔️ Defense Strategy</a>
+        <a href="{{ url_for('blue_scoreboard') }}">📊 Scoreboard</a>
+        <a href="{{ url_for('logout') }}">📜 Logout</a>
+    </div>
+
+    <div class="container">
+        <h1>🛡️ Firewall & IDS</h1>
+        <p>Manage firewall rules and monitor IDS alerts.</p>
+
+        <div class="firewall-section">
+            <h2>🔧 Firewall Rules</h2>
+            <input type="text" id="firewall-rule" placeholder="Enter firewall rule (e.g., Block 192.168.1.10)">
+            <button onclick="addRule()">➕ Add Rule</button>
+            <h3>Current Rules:</h3>
+            <ul id="rule-list"></ul>
+        </div>
+
+        <div class="ids-section">
+            <h2>⚠️ Intrusion Detection Alerts</h2>
+            <button onclick="triggerAlert()">🔍 Simulate Attack Detection</button>
+            <div id="ids-alerts"></div>
+        </div>
+    </div>
+
+</body>
+</html>
+
