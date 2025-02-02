@@ -8,6 +8,27 @@ from flask_mail import Mail, Message
 
 app = Flask(__name__)
 
+import os
+import secrets
+from dotenv import load_dotenv
+
+# Load environment variables from .env
+load_dotenv()
+
+# Generate a new SECRET_KEY if it's not set in the environment
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', secrets.token_hex(32))
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI', 'sqlite:///instance/users.db')
+app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER', 'smtp.sendgrid.net')
+app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT', 587))  # Default 587
+app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS', 'True') == 'True'
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME', 'apikey')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD', '')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER', 'your_email@example.com')
+
+# Print secret key (only for debugging - remove in production)
+print(f"Loaded SECRET_KEY: {app.config['SECRET_KEY'][:10]}... (hidden for security)")
+
 # Database configuration
 db_path = os.path.join(app.instance_path, 'users.db')
 os.makedirs(app.instance_path, exist_ok=True)
