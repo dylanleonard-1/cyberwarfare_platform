@@ -13,4 +13,6 @@ requests
 itsdangerous
 wtforms
 Flask-Migrate
+psutil
+qrcode[pil]  # ✅ Add this to fix QR code issue
 
